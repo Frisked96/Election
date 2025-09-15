@@ -1,0 +1,21 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+  <h2>Edit Candidate</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+
+  <hr>
+
+  <h3>Custom Fields</h3>
+  <ul>
+    {% for field in candidate.fields.all %}
+      <li>{{ field.name }}: {{ field.value }}</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{% url 'admin_candidate_add_field' candidate.id %}" class="btn btn-secondary">Add Custom Field</a>
+{% endblock %}

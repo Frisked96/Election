@@ -1,0 +1,32 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}Manage Candidates for {{ election.name }}{% endblock %}
+
+{% block content %}
+  <h2>Manage Candidates for {{ election.name }}</h2>
+
+  <h3>Add New Candidate</h3>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ candidate_form.as_p }}
+    <button type="submit" class="btn btn-primary">Add Candidate</button>
+  </form>
+
+  <hr>
+
+  <h3>Existing Candidates</h3>
+  <ul class="list-group">
+    {% for candidate in election.candidates.all %}
+      <li class="list-group-item">
+        {{ candidate.full_name }}
+        <a href="{% url 'admin_candidate_edit' pk=candidate.id %}" class="btn btn-sm btn-warning">Edit</a>
+        <a href="{% url 'admin_candidate_delete' pk=candidate.id %}" class="btn btn-sm btn-danger">Delete</a>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-center text-muted">
+        No candidates have been added to this election yet.
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'admin_election_list' %}" class="btn btn-secondary mt-3">Back to Elections</a>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'polls/base.html' %}
+
+{% block content %}
+  <h2>Delete Election</h2>
+  <p>Are you sure you want to delete "{{ election.name }}"?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{% url 'admin_election_list' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}

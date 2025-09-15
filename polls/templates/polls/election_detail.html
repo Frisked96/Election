@@ -1,0 +1,39 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}{{ election.name }}{% endblock %}
+
+{% block content %}
+  <h2>{{ election.name }}</h2>
+  <p><strong>Start Date:</strong> {{ election.start_date }}</p>
+  <p><strong>End Date:</strong> {{ election.end_date }}</p>
+
+  {% if election_is_closed %}
+    <p class="alert alert-secondary">This election has been closed.</p>
+  {% elif user_is_admin %}
+    <p class="alert alert-danger">Admins are not allowed to vote.</p>
+  {% elif user_is_candidate %}
+    <p class="alert alert-warning">You are a candidate in this election, so you are not allowed to vote.</p>
+  {% elif user_has_voted %}
+    <p class="alert alert-info">You have already voted in this election.</p>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <ul class="list-group">
+      {% for candidate in election.candidates.all %}
+        <li class="list-group-item">
+          <input type="radio" name="candidate" value="{{ candidate.id }}" id="candidate{{ candidate.id }}" {% if election_is_closed or user_is_admin or user_is_candidate or user_has_voted %}disabled{% endif %}>
+          <label for="candidate{{ candidate.id }}"><strong>{{ candidate.full_name }}</strong></label>
+          {% if candidate.image %}
+            <div class="text-center my-2">
+              <img src="{{ candidate.image.url }}" alt="{{ candidate.full_name }}" class="img-thumbnail" style="max-width: 200px;">
+            </div>
+          {% endif %}
+          <p>{{ candidate.bio }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+    <button type="submit" class="btn btn-primary mt-3" {% if election_is_closed or user_is_admin or user_is_candidate or user_has_voted %}disabled{% endif %}>Vote</button>
+  </form>
+  <a href="{% url 'election_results' pk=election.id %}" class="btn btn-secondary mt-3">View Results</a>
+{% endblock %}

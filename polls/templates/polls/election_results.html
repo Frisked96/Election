@@ -1,0 +1,16 @@
+{% extends 'polls/base.html' %}
+
+{% block title %}Results for {{ election.name }}{% endblock %}
+
+{% block content %}
+  <h2>Results for {{ election.name }}</h2>
+  <ul class="list-group">
+    {% for candidate, vote_count in results.items %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        {{ candidate.full_name }}
+        <span class="badge bg-primary rounded-pill">{{ vote_count }}</span>
+      </li>
+    {% endfor %}
+  </ul>
+  <a href="{% url 'election_detail' pk=election.id %}" class="btn btn-secondary mt-3">Back to Election</a>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'polls/base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block head %}
+<style>
+    body {
+        background-image: url("{% static 'polls/images/login.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    .card {
+        background-color: rgba(33, 37, 41, 0.85); /* Greyish transparent */
+        color: white;
+    }
+    .card .form-control {
+        background-color: #495057;
+        color: white;
+        border-color: #6c757d;
+    }
+    .card .form-control::placeholder {
+        color: #ced4da;
+    }
+    .card label {
+        color: #f8f9fa;
+    }
+    .login-container {
+        padding-top: 5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center login-container">
+    <div class="col-md-6">
+        <div class="card">
+            <h2 class="text-center">Login</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
